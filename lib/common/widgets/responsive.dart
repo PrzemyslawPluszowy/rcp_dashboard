@@ -1,34 +1,57 @@
-import 'package:flutter/material.dart';
+// Definicja enum
+import 'package:rcp_dashboard/main_export.dart';
+
+enum DeviceType {
+  mobile,
+  tablet,
+  desktop,
+}
 
 class Responsive extends StatelessWidget {
   const Responsive({
     required this.mobile,
-    required this.tablet,
+    this.tablet,
+    this.desktop,
     super.key,
   });
+
   final Widget mobile;
-  final Widget tablet;
+  final Widget? tablet;
+  final Widget? desktop;
 
-// This size work fine on my design, maybe you
-// need some customization depends on your design
-
-  // This isMobile, isTablet, isDesktop help us later
   static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width < 500;
+      MediaQuery.of(context).size.width < 700;
 
   static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 500;
+      MediaQuery.of(context).size.width >= 700 &&
+      MediaQuery.of(context).size.width < 1200;
+
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 1200;
+
+  static DeviceType getDeviceSize(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    if (width >= 1200) {
+      return DeviceType.desktop;
+    } else if (width >= 700 && width < 1200) {
+      return DeviceType.tablet;
+    } else {
+      return DeviceType.mobile;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final deviceType = getDeviceSize(context);
 
-    if (size.width >= 500) {
-      return tablet;
-    }
-    // Or less then that we called it mobile
-    else {
-      return mobile;
+    switch (deviceType) {
+      case DeviceType.desktop:
+        return desktop ?? mobile;
+      case DeviceType.tablet:
+        return tablet ?? mobile;
+      case DeviceType.mobile:
+        return mobile;
     }
   }
 }

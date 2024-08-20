@@ -23,8 +23,12 @@ mixin _$DropData {
   String get label => throw _privateConstructorUsedError;
   String get value => throw _privateConstructorUsedError;
 
+  /// Serializes this DropData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DropData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DropDataCopyWith<DropData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$DropDataCopyWithImpl<$Res, $Val extends DropData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DropData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,6 +91,8 @@ class __$$DropDataImplCopyWithImpl<$Res>
       _$DropDataImpl _value, $Res Function(_$DropDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DropData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,11 +139,13 @@ class _$DropDataImpl implements _DropData {
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, label, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DropData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DropDataImplCopyWith<_$DropDataImpl> get copyWith =>
@@ -161,8 +171,11 @@ abstract class _DropData implements DropData {
   String get label;
   @override
   String get value;
+
+  /// Create a copy of DropData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DropDataImplCopyWith<_$DropDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
