@@ -1,10 +1,6 @@
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rcp_dashboard/core/routing.dart';
-import 'package:rcp_dashboard/utils/extension/context_color.dart';
-import 'package:rcp_dashboard/utils/extension/context_text_theme.dart';
-import 'package:rcp_dashboard/utils/extension/string_hc.dart';
+import 'package:rcp_dashboard/main_export.dart';
 
 class NavigationLayout extends StatelessWidget {
   const NavigationLayout({required this.navigationShell, super.key});

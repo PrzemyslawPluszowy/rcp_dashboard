@@ -1,9 +1,4 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rcp_dashboard/src/features/setting/cubit/theme_logic_cubit.dart';
-import 'package:rcp_dashboard/utils/app_sizes.dart';
-import 'package:rcp_dashboard/utils/extension/l10n.dart';
+import 'package:rcp_dashboard/main_export.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});

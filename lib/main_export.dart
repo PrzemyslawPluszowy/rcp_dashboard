@@ -1,3 +1,4 @@
+export 'package:flex_color_scheme/flex_color_scheme.dart';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,13 @@ export 'package:rcp_dashboard/core/di.dart';
 export 'package:rcp_dashboard/core/l10n/app_localizations.dart';
 export 'package:rcp_dashboard/core/l10n/l10n.dart';
 export 'package:rcp_dashboard/core/routing.dart';
+export 'package:rcp_dashboard/main_export.dart';
 export 'package:rcp_dashboard/src/features/setting/cubit/theme_logic_cubit.dart';
+export 'package:rcp_dashboard/utils/app_sizes.dart';
+export 'package:rcp_dashboard/utils/extension/context_color.dart';
+export 'package:rcp_dashboard/utils/extension/context_text_theme.dart';
+export 'package:rcp_dashboard/utils/extension/l10n.dart';
+export 'package:rcp_dashboard/utils/extension/string_hc.dart';
 export 'package:rcp_dashboard/utils/providers.dart';
 export 'package:rcp_dashboard/utils/theme.dart';
+export 'package:rcp_dashboard/utils/ui.dart';
