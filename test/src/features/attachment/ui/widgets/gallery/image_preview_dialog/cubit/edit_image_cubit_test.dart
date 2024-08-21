@@ -1,11 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/data/gallery_repository.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
 import 'package:rcp_dashboard/src/features/attachment/service/gallery_service.dart';
-import 'package:rcp_dashboard/src/features/attachment/ui/cubit/batch_delete_image_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/gallery_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/image_preview_dialog/cubit/edit_image_cubit.dart';
 
@@ -67,44 +65,35 @@ final List<ImageModel> mockImages = [
 
 void main() {
   late GalleryCubit galleryCubit;
-  late EditImageCubit editImageCubit;
   late GalleryService galleryService;
-  late BatchDeleteImageCubit bathDeleteImageCubit;
   late MockGalleryRepository mockGalleryRepository;
-
-  setUpAll(initDi);
 
   setUp(() {
     mockGalleryRepository = MockGalleryRepository();
-    galleryService = getIt<GalleryService>();
-    bathDeleteImageCubit =
-        BatchDeleteImageCubit(galleryService: galleryService);
+    galleryService = GalleryService();
     galleryCubit = GalleryCubit(
       galleryRepository: mockGalleryRepository,
       galleryService: galleryService,
     );
-    editImageCubit = EditImageCubit(
-      galleryService: galleryService,
-      index: 0,
-      images: mockImages,
-    );
   });
 
-  blocTest<GalleryCubit, GalleryState>(
+  blocTest<EditImageCubit, EditImageState>(
     '''
-powinien emitować odpowiednie stany podczas ładowania,
-zaznaczania i usuwania obrazów
+    When the updateImage method is called, the image should be updated.
 ''',
     build: () {
       when(() => mockGalleryRepository.fetchImages(0, 30))
           .thenAnswer((_) async => mockImages);
-      return galleryCubit;
+      return EditImageCubit(
+        galleryService: galleryService,
+        index: 0,
+        images: mockImages,
+      );
     },
     act: (cubit) async {
-      await cubit.loadImages();
-      cubit.selectImage(mockImages[1]);
-      bathDeleteImageCubit.deleteImages();
-      editImageCubit.updateImage(
+      await galleryCubit.loadImages();
+
+      cubit.updateImage(
         mockImages[0].copyWith(
           name: 'Updated Image 1',
           description: 'Updated Description 1',
@@ -112,46 +101,68 @@ zaznaczania i usuwania obrazów
       );
     },
     expect: () => [
-      GalleryState.loaded(
-        images: mockImages,
-        selectedImages: [],
-        hasReachedMax: true,
-      ),
-      GalleryState.loaded(
-        hasReachedMax: true,
-        images: mockImages,
-        selectedImages: [mockImages[1]],
-      ),
-      GalleryState.loaded(
-        hasReachedMax: true,
-        images: [
-          mockImages[0],
-          mockImages[2],
-          mockImages[3],
-        ],
-        selectedImages: [mockImages[1]],
-      ),
-      GalleryState.loaded(
-        hasReachedMax: true,
-        images: [
-          mockImages[0],
-          mockImages[2],
-          mockImages[3],
-        ],
-        selectedImages: [],
-      ),
-      GalleryState.loaded(
-        hasReachedMax: true,
+      EditImageState.loaded(images: mockImages, index: 0),
+      EditImageState.loaded(
         images: [
           mockImages[0].copyWith(
             name: 'Updated Image 1',
             description: 'Updated Description 1',
           ),
-          mockImages[2],
-          mockImages[3],
+          ...mockImages.sublist(1),
         ],
-        selectedImages: [],
+        index: 0,
       ),
+    ],
+  );
+
+  blocTest<EditImageCubit, EditImageState>(
+    '''
+    When the nextImage method is called, the next image should be displayed.
+''',
+    build: () {
+      when(() => mockGalleryRepository.fetchImages(0, 30))
+          .thenAnswer((_) async => mockImages);
+      return EditImageCubit(
+        galleryService: galleryService,
+        index: 0,
+        images: mockImages,
+      );
+    },
+    act: (cubit) async {
+      await galleryCubit.loadImages();
+
+      cubit.nextImage();
+    },
+    expect: () => [
+      EditImageState.loaded(images: mockImages, index: 1),
+    ],
+  );
+
+  blocTest<EditImageCubit, EditImageState>(
+    '''
+    When the previousImage method is called, the previous image should be displayed.
+''',
+    build: () {
+      when(() => mockGalleryRepository.fetchImages(0, 30))
+          .thenAnswer((_) async => mockImages);
+      return EditImageCubit(
+        galleryService: galleryService,
+        index: 1,
+        images: mockImages,
+      );
+    },
+    act: (cubit) async {
+      await galleryCubit.loadImages();
+
+      cubit
+        ..nextImage()
+        ..nextImage()
+        ..previousImage();
+    },
+    expect: () => [
+      EditImageState.loaded(images: mockImages, index: 2),
+      EditImageState.loaded(images: mockImages, index: 3),
+      EditImageState.loaded(images: mockImages, index: 2),
     ],
   );
 }

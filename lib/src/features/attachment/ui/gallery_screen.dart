@@ -1,5 +1,5 @@
 import 'package:rcp_dashboard/main_export.dart';
-import 'package:rcp_dashboard/src/features/attachment/ui/cubit/bath_delete_image_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/cubit/batch_delete_image_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/gallery_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/gallery_widget.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/load_more_btn.dart';
@@ -23,7 +23,7 @@ class GalleryScreen extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (_) => BathDeleteImageCubit(galleryService: getIt.call()),
+            create: (_) => BatchDeleteImageCubit(galleryService: getIt.call()),
           ),
         ],
         child: ListView(

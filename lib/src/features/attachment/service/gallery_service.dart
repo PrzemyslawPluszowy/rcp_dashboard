@@ -22,9 +22,6 @@ class GalleryService {
 
   void selectImage(ImageModel image) {
     final selectedImages = List<ImageModel>.from(_selectedImages.value);
-    print(
-      'selectedImages: $selectedImages',
-    );
 
     if (selectedImages.contains(image)) {
       _selectedImages.add(selectedImages..remove(image));
@@ -61,7 +58,6 @@ class GalleryService {
     for (var i = 0; i < selectedImages.length; i++) {
       images.removeWhere((element) => element.id == selectedImages[i].id);
     }
-    print(images);
     _loadedImage.sink.add(images);
     _selectedImages.sink.add([]);
   }

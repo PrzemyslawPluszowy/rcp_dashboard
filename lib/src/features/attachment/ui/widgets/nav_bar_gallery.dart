@@ -1,6 +1,6 @@
 import 'package:rcp_dashboard/main.dart';
 import 'package:rcp_dashboard/main_export.dart';
-import 'package:rcp_dashboard/src/features/attachment/ui/cubit/bath_delete_image_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/cubit/batch_delete_image_cubit.dart';
 
 class NavBarGallery extends StatelessWidget {
   const NavBarGallery({
@@ -21,7 +21,7 @@ class NavBarGallery extends StatelessWidget {
             child: Text('Add image'.hardcoded),
           ),
           const VerticalDivider(),
-          BlocBuilder<BathDeleteImageCubit, BathDeleteImageState>(
+          BlocBuilder<BatchDeleteImageCubit, BatchDeleteImageState>(
             builder: (context, state) {
               logE.warning(state);
               return state.when(
@@ -30,7 +30,7 @@ class NavBarGallery extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          context.read<BathDeleteImageCubit>().deleteImages();
+                          context.read<BatchDeleteImageCubit>().deleteImages();
                         },
                         child: Text(
                           'Delete'.hardcoded,
