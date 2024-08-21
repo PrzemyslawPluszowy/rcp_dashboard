@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rcp_dashboard/utils/date_time_converter.dart';
 
 part 'image_model.freezed.dart';
 part 'image_model.g.dart';
@@ -11,9 +12,9 @@ class ImageModel with _$ImageModel {
     required String name,
     required String fileName,
     required String description,
-    required String createdAt,
-    required String updatedAt,
+    @DateTimeConverter() required DateTime createdAt,
     required String thumbnailUrl,
+    @DateTimeOrNullConverter() DateTime? updatedAt,
     ImageSeo? seo,
   }) = _ImageModel;
 

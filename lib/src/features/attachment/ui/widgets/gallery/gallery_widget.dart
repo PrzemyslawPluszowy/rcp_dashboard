@@ -1,7 +1,9 @@
 import 'package:rcp_dashboard/common/widgets/cashed_image_widget.dart';
 import 'package:rcp_dashboard/common/widgets/responsive.dart';
 import 'package:rcp_dashboard/main_export.dart';
+import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/gallery_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/image_preview_dialog/image_preview_dialog.dart';
 
 class GalleryWidget extends StatelessWidget {
   const GalleryWidget({
@@ -37,15 +39,26 @@ class GalleryWidget extends StatelessWidget {
               ),
             ),
           ),
-          loaded: (images, _) => GridView.builder(
+          loaded: (images, selectedImages) => GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: _getCrossAxisCount(context),
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
             ),
             itemBuilder: (context, index) {
-              return CashedImageWidget(
-                imageUrl: images[index].thumbnailUrl,
+              return GestureDetector(
+                onTap: () {
+                  showAdaptiveDialog<BuildContext>(
+                    context: context,
+                    builder: (context) {
+                      return ImagesPreviewDialog(
+                        images: images,
+                        index: index,
+                      );
+                    },
+                  );
+                },
+                child: _imageContainer(images, index, selectedImages, context),
               );
             },
             itemCount: images.length,
@@ -54,6 +67,37 @@ class GalleryWidget extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Stack _imageContainer(
+    List<ImageModel> images,
+    int index,
+    List<ImageModel> selectedImages,
+    BuildContext context,
+  ) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        CashedImageWidget(
+          imageUrl: images[index].thumbnailUrl,
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            icon: Icon(
+              Icons.check_circle_rounded,
+              color: selectedImages.contains(images[index])
+                  ? Colors.green
+                  : Colors.white,
+            ),
+            onPressed: () {
+              context.read<GalleryCubit>().selectImage(images[index]);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

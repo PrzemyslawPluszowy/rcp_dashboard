@@ -8,7 +8,6 @@ class LoadMoreBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
       child: FilledButton(
         onPressed: () {},
         child: Text('Load more'.hardcoded),

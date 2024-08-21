@@ -1,25 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:rcp_dashboard/src/features/attachment/service/gallery_service.dart';
 
 final getIt = GetIt.instance;
 
 void initDi() {
   //register and setup dio
-  getIt.registerLazySingleton<Dio>(
-    () => Dio()
-      ..interceptors.add(InterceptorsWrapper())
-      ..options = BaseOptions(
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json',
-        },
-      )
-      ..interceptors.add(
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
+  getIt
+    ..registerLazySingleton<Dio>(
+      () => Dio()
+        ..interceptors.add(InterceptorsWrapper())
+        ..options = BaseOptions(
+          headers: {
+            'content-type': 'application/json',
+            'accept': 'application/json',
+          },
+        )
+        ..interceptors.add(
+          PrettyDioLogger(
+            requestHeader: true,
+            requestBody: true,
+          ),
         ),
-      ),
-  );
+    )
+    //register and setup gallery service
+    ..registerLazySingleton<GalleryService>(GalleryService.new);
 }
