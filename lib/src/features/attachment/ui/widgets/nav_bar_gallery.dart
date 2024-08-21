@@ -1,6 +1,7 @@
 import 'package:rcp_dashboard/main.dart';
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/batch_delete_image_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/add_images_dialog/add_images_modal.dart';
 
 class NavBarGallery extends StatelessWidget {
   const NavBarGallery({
@@ -17,45 +18,18 @@ class NavBarGallery extends StatelessWidget {
         children: [
           gapW12,
           TextButton(
-            onPressed: () {},
-            child: Text('Add image'.hardcoded),
-          ),
-          const VerticalDivider(),
-          BlocBuilder<BatchDeleteImageCubit, BatchDeleteImageState>(
-            builder: (context, state) {
-              logE.warning(state);
-              return state.when(
-                selectedToDelte: (selectedImages) {
-                  return Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          context.read<BatchDeleteImageCubit>().deleteImages();
-                        },
-                        child: Text(
-                          'Delete'.hardcoded,
-                          style: TextStyle(
-                            color: context.colorScheme.error,
-                          ),
-                        ),
-                      ),
-                      const VerticalDivider(),
-                    ],
-                  );
-                },
-                initial: () => const SizedBox(),
-                deleting: () => const CircularProgressIndicator.adaptive(),
-                error: (message) {
-                  return Text(
-                    message,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.error,
-                    ),
-                  );
+            onPressed: () {
+              showAdaptiveDialog<BuildContext>(
+                context: context,
+                builder: (_) {
+                  return AddImagesModal();
                 },
               );
             },
+            child: Text('Add image'.hardcoded),
           ),
+          const VerticalDivider(),
+          _batchRemoveIMages(),
           const Spacer(),
           Flexible(
             child: TextFormField(
@@ -68,6 +42,45 @@ class NavBarGallery extends StatelessWidget {
           gapW12,
         ],
       ),
+    );
+  }
+
+  BlocBuilder<BatchDeleteImageCubit, BatchDeleteImageState>
+      _batchRemoveIMages() {
+    return BlocBuilder<BatchDeleteImageCubit, BatchDeleteImageState>(
+      builder: (context, state) {
+        logE.warning(state);
+        return state.when(
+          selectedToDelte: (selectedImages) {
+            return Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    context.read<BatchDeleteImageCubit>().deleteImages();
+                  },
+                  child: Text(
+                    'Delete'.hardcoded,
+                    style: TextStyle(
+                      color: context.colorScheme.error,
+                    ),
+                  ),
+                ),
+                const VerticalDivider(),
+              ],
+            );
+          },
+          initial: () => const SizedBox(),
+          deleting: () => const CircularProgressIndicator.adaptive(),
+          error: (message) {
+            return Text(
+              message,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.error,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

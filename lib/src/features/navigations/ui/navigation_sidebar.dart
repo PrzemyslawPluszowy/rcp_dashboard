@@ -1,5 +1,4 @@
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rcp_dashboard/main_export.dart';
 
 class NavigationLayout extends StatelessWidget {

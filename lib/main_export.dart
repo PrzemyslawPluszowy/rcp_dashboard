@@ -3,6 +3,7 @@ export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
+export 'package:go_router/go_router.dart';
 export 'package:hydrated_bloc/hydrated_bloc.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:rcp_dashboard/core/config.dart';
