@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
@@ -12,13 +14,14 @@ class EditImageCubit extends Cubit<EditImageState> {
     required this.index,
     required this.images,
   }) : super(EditImageState.loaded(images: images, index: index)) {
-    galleryService.loadedImages.listen((images) {
-      final index = state.whenOrNull(
-        loaded: (images, index) => index,
+    _subscription = galleryService.loadedImages.distinct().listen((images) {
+      final currentIndex = state.maybeWhen(
+        loaded: (_, index) => index,
+        orElse: () => null,
       );
 
-      if (index != null) {
-        emit(EditImageState.loaded(images: images!, index: index));
+      if (images != null && currentIndex != null) {
+        emit(EditImageState.loaded(images: images, index: currentIndex));
       }
     });
   }
@@ -26,28 +29,37 @@ class EditImageCubit extends Cubit<EditImageState> {
   final GalleryService galleryService;
   final int index;
   final List<ImageModel> images;
+  late StreamSubscription<List<ImageModel>?> _subscription;
 
   void updateImage(ImageModel image) {
     galleryService.updatedImage(image);
   }
 
   void nextImage() {
-    final index = state.whenOrNull(
-      loaded: (images, index) => index,
+    state.maybeWhen(
+      loaded: (images, index) {
+        if (index < images.length - 1) {
+          emit(EditImageState.loaded(images: images, index: index + 1));
+        }
+      },
+      orElse: () {},
     );
-
-    if (index != null && index < images.length - 1) {
-      emit(EditImageState.loaded(images: images, index: index + 1));
-    }
   }
 
   void previousImage() {
-    final index = state.whenOrNull(
-      loaded: (images, index) => index,
+    state.maybeWhen(
+      loaded: (images, index) {
+        if (index > 0) {
+          emit(EditImageState.loaded(images: images, index: index - 1));
+        }
+      },
+      orElse: () {},
     );
+  }
 
-    if (index != null && index > 0) {
-      emit(EditImageState.loaded(images: images, index: index - 1));
-    }
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

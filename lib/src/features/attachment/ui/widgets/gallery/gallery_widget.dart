@@ -54,7 +54,6 @@ class GalleryWidget extends StatelessWidget {
                       return BlocProvider.value(
                         value: context.read<GalleryCubit>(),
                         child: ImagesPreviewDialog(
-                          images: images,
                           index: index,
                         ),
                       );

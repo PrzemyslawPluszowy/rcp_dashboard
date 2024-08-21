@@ -3,16 +3,16 @@ import 'package:intl/intl.dart';
 import 'package:rcp_dashboard/common/widgets/cashed_image_widget.dart';
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/cubit/gallery_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/image_preview_dialog/cubit/edit_image_cubit.dart';
 
 class ImagesPreviewDialog extends StatefulWidget {
   const ImagesPreviewDialog({
-    required this.images,
     required this.index,
     super.key,
   });
 
-  final List<ImageModel> images;
+  // final List<ImageModel> images;
   final int index;
 
   @override
@@ -24,6 +24,7 @@ class _ImagesPreviewDialogState extends State<ImagesPreviewDialog> {
   late final TextEditingController _descController;
   late final TextEditingController _nameController;
   late final TextEditingController _altTextController;
+  late final List<ImageModel> initialImages;
 
   @override
   void initState() {
@@ -41,23 +42,28 @@ class _ImagesPreviewDialogState extends State<ImagesPreviewDialog> {
   }
 
   void _initializeCubitsAndControllers() {
-    final image = widget.images[widget.index];
-
+    initialImages = context.read<GalleryCubit>().state.maybeWhen(
+          loaded: (images, index) => images,
+          orElse: () => <ImageModel>[],
+        );
     _editImageCubit = EditImageCubit(
       galleryService: getIt.call(),
-      images: widget.images,
+      images: initialImages,
       index: widget.index,
     );
 
-    _descController = TextEditingController(text: image.description);
-    _nameController = TextEditingController(text: image.name);
-    _altTextController = TextEditingController(text: image.seo?.alt);
+    _descController =
+        TextEditingController(text: initialImages[widget.index].description);
+    _nameController =
+        TextEditingController(text: initialImages[widget.index].name);
+    _altTextController =
+        TextEditingController(text: initialImages[widget.index].seo?.alt ?? '');
   }
 
-  void _updateImageDetails(int index) {
-    _altTextController.text = widget.images[index].seo?.alt ?? '';
-    _descController.text = widget.images[index].description;
-    _nameController.text = widget.images[index].name;
+  void _updateImageDetails(int index, List<ImageModel> images) {
+    _altTextController.text = images[index].seo?.alt ?? '';
+    _descController.text = images[index].description;
+    _nameController.text = images[index].name;
   }
 
   @override
@@ -107,14 +113,14 @@ class _ImagesPreviewDialogState extends State<ImagesPreviewDialog> {
           icon: const Icon(Icons.arrow_back_ios_rounded),
           onPressed: () {
             _editImageCubit.previousImage();
-            _updateImageDetails(index);
+            _updateImageDetails(index, images);
           },
         ),
         IconButton(
           icon: const Icon(Icons.arrow_forward_ios_rounded),
           onPressed: () {
             _editImageCubit.nextImage();
-            _updateImageDetails(index);
+            _updateImageDetails(index, images);
           },
         ),
       ],

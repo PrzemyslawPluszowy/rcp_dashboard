@@ -30,13 +30,11 @@ class GalleryService {
   }
 
   void updatedImage(ImageModel image) {
-    final images = _loadedImage.value;
-    if (images != null) {
-      final index = images.indexWhere((element) => element.id == image.id);
-      if (index != -1) {
-        images[index] = image;
-        _loadedImage.add(images);
-      }
+    final images = List<ImageModel>.from(_loadedImage.value?.toList() ?? []);
+    final index = images.indexWhere((element) => element.id == image.id);
+    if (index != -1) {
+      images[index] = image;
+      _loadedImage.add(images);
     }
   }
 
@@ -47,7 +45,7 @@ class GalleryService {
     if (index != -1) {
       images.removeAt(index);
       _loadedImage.sink.add(
-        images.toList(),
+        images,
       );
     }
   }
