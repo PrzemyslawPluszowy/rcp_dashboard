@@ -1,4 +1,5 @@
 import 'package:rcp_dashboard/main_export.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/cubit/bath_delete_image_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/gallery_cubit.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/gallery_widget.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/load_more_btn.dart';
@@ -13,10 +14,18 @@ class GalleryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Gallery Screen'.hardcoded),
       ),
-      body: BlocProvider(
-        create: (context) => GalleryCubit(
-          galleryService: getIt.call(),
-        ),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => GalleryCubit(
+              galleryService: getIt.call(),
+              galleryRepository: getIt.call(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => BathDeleteImageCubit(galleryService: getIt.call()),
+          ),
+        ],
         child: ListView(
           padding: Ui.horizontalPadding,
           children: const [

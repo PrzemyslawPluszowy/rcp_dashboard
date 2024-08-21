@@ -1,4 +1,6 @@
+import 'package:rcp_dashboard/main.dart';
 import 'package:rcp_dashboard/main_export.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/cubit/bath_delete_image_cubit.dart';
 
 class NavBarGallery extends StatelessWidget {
   const NavBarGallery({
@@ -19,23 +21,40 @@ class NavBarGallery extends StatelessWidget {
             child: Text('Add image'.hardcoded),
           ),
           const VerticalDivider(),
-          DropdownButton(
-            value: 'all',
-            items: [
-              DropdownMenuItem(
-                value: 'all',
-                child: Text('All'.hardcoded),
-              ),
-              DropdownMenuItem(
-                value: 'category1',
-                child: Text('Category 1'.hardcoded),
-              ),
-              DropdownMenuItem(
-                value: 'category2',
-                child: Text('Category 2'.hardcoded),
-              ),
-            ],
-            onChanged: (value) {},
+          BlocBuilder<BathDeleteImageCubit, BathDeleteImageState>(
+            builder: (context, state) {
+              logE.warning(state);
+              return state.when(
+                selectedToDelte: (selectedImages) {
+                  return Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.read<BathDeleteImageCubit>().deleteImages();
+                        },
+                        child: Text(
+                          'Delete'.hardcoded,
+                          style: TextStyle(
+                            color: context.colorScheme.error,
+                          ),
+                        ),
+                      ),
+                      const VerticalDivider(),
+                    ],
+                  );
+                },
+                initial: () => const SizedBox(),
+                deleting: () => const CircularProgressIndicator.adaptive(),
+                error: (message) {
+                  return Text(
+                    message,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: context.colorScheme.error,
+                    ),
+                  );
+                },
+              );
+            },
           ),
           const Spacer(),
           Flexible(

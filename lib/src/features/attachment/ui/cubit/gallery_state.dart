@@ -7,6 +7,7 @@ class GalleryState with _$GalleryState {
   const factory GalleryState.loaded({
     required List<ImageModel> images,
     @Default([]) List<ImageModel> selectedImages,
+    @Default(false) hasReachedMax,
   }) = _Loaded;
   const factory GalleryState.error({required String message}) = _Error;
 }

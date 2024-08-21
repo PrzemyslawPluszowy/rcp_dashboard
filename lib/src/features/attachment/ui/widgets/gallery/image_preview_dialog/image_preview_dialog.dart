@@ -43,7 +43,7 @@ class _ImagesPreviewDialogState extends State<ImagesPreviewDialog> {
 
   void _initializeCubitsAndControllers() {
     initialImages = context.read<GalleryCubit>().state.maybeWhen(
-          loaded: (images, index) => images,
+          loaded: (images, index, isReachMax) => images,
           orElse: () => <ImageModel>[],
         );
     _editImageCubit = EditImageCubit(

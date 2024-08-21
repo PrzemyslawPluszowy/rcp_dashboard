@@ -39,34 +39,40 @@ class GalleryWidget extends StatelessWidget {
               ),
             ),
           ),
-          loaded: (images, selectedImages) => GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _getCrossAxisCount(context),
-              crossAxisSpacing: Sizes.p8,
-              mainAxisSpacing: Sizes.p8,
-            ),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  showAdaptiveDialog<BuildContext>(
-                    context: context,
-                    builder: (_) {
-                      return BlocProvider.value(
-                        value: context.read<GalleryCubit>(),
-                        child: ImagesPreviewDialog(
-                          index: index,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: _imageContainer(images, index, selectedImages, context),
-              );
-            },
-            itemCount: images.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-          ),
+          loaded: (images, selectedImages, isReachMax) {
+            if (images.isEmpty) {
+              return Center(child: Text('No images'.hardcoded));
+            }
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _getCrossAxisCount(context),
+                crossAxisSpacing: Sizes.p8,
+                mainAxisSpacing: Sizes.p8,
+              ),
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    showAdaptiveDialog<BuildContext>(
+                      context: context,
+                      builder: (_) {
+                        return BlocProvider.value(
+                          value: context.read<GalleryCubit>(),
+                          child: ImagesPreviewDialog(
+                            index: index,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child:
+                      _imageContainer(images, index, selectedImages, context),
+                );
+              },
+              itemCount: images.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+            );
+          },
         );
       },
     );
