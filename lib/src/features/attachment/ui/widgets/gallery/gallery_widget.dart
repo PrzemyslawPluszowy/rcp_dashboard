@@ -50,10 +50,13 @@ class GalleryWidget extends StatelessWidget {
                 onTap: () {
                   showAdaptiveDialog<BuildContext>(
                     context: context,
-                    builder: (context) {
-                      return ImagesPreviewDialog(
-                        images: images,
-                        index: index,
+                    builder: (_) {
+                      return BlocProvider.value(
+                        value: context.read<GalleryCubit>(),
+                        child: ImagesPreviewDialog(
+                          images: images,
+                          index: index,
+                        ),
                       );
                     },
                   );

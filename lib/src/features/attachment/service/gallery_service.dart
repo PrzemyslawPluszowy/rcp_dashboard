@@ -28,4 +28,15 @@ class GalleryService {
       _selectedImages.add(selectedImages..add(image));
     }
   }
+
+  void updatedImage(ImageModel image) {
+    final images = _loadedImage.value;
+    if (images != null) {
+      final index = images.indexWhere((element) => element.id == image.id);
+      if (index != -1) {
+        images[index] = image;
+        _loadedImage.add(images);
+      }
+    }
+  }
 }

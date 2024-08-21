@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
 import 'package:rcp_dashboard/src/features/attachment/service/gallery_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,16 +37,6 @@ class GalleryCubit extends Cubit<GalleryState> {
   }
 
   //update image
-  Future<void> updateImage(ImageModel image) async {
-    final images = await galleryService.loadedImages.last;
-    if (images != null) {
-      final index = images.indexWhere((element) => element.id == image.id);
-      if (index != -1) {
-        images[index] = image;
-        galleryService.addImages(images);
-      }
-    }
-  }
 
   final List<ImageModel> mock = [
     ImageModel(
