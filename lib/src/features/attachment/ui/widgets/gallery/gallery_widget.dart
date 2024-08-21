@@ -42,8 +42,8 @@ class GalleryWidget extends StatelessWidget {
           loaded: (images, selectedImages) => GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: _getCrossAxisCount(context),
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+              crossAxisSpacing: Sizes.p8,
+              mainAxisSpacing: Sizes.p8,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -84,6 +84,35 @@ class GalleryWidget extends StatelessWidget {
       children: [
         CashedImageWidget(
           imageUrl: images[index].thumbnailUrl,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: ColoredBox(
+            color: Colors.black.withOpacity(0.5),
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              images[index].name,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          child: IconButton(
+            icon: const Icon(
+              Icons.remove_circle,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              context.read<GalleryCubit>().removeImage(
+                    images[index],
+                  );
+            },
+          ),
         ),
         Positioned(
           top: 0,

@@ -36,7 +36,10 @@ class GalleryCubit extends Cubit<GalleryState> {
     galleryService.selectImage(image);
   }
 
-  //update image
+  //remove
+  Future<void> removeImage(ImageModel image) async {
+    galleryService.removeImage(image);
+  }
 
   final List<ImageModel> mock = [
     ImageModel(

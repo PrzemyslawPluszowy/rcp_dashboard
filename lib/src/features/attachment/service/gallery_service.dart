@@ -39,4 +39,16 @@ class GalleryService {
       }
     }
   }
+
+  //remove image
+  void removeImage(ImageModel image) {
+    final images = List<ImageModel>.from(_loadedImage.value?.toList() ?? []);
+    final index = images.indexWhere((element) => element.id == image.id);
+    if (index != -1) {
+      images.removeAt(index);
+      _loadedImage.sink.add(
+        images.toList(),
+      );
+    }
+  }
 }
