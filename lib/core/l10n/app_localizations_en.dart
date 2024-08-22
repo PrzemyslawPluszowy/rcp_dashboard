@@ -209,4 +209,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mustContainOneNumber => 'The number must contain at least one number';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get signWithApple => 'Sign With Apple';
+
+  @override
+  String get signWithGoogle => 'Sign With Google';
+
+  @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account? Create one';
+
+  @override
+  String get createNewAccount => 'Create New Account';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign In';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get wrongPassword => 'Wrong password';
+
+  @override
+  String get passwordToLong => 'Password must be less then 255';
+
+  @override
+  String get passwordToShort => 'Password must be at least 8';
+
+  @override
+  String get passwordWhiteSpace => 'Password cannot start or end with a space';
 }

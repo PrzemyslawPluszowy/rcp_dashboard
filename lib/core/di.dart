@@ -5,6 +5,9 @@ import 'package:rcp_dashboard/src/features/attachment/data/gallery_repository.da
 import 'package:rcp_dashboard/src/features/attachment/service/gallery_service.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/data/upload_attachment_repository.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/services/upload_service.dart';
+import 'package:rcp_dashboard/src/features/auth/data/auth_hive_repository.dart';
+import 'package:rcp_dashboard/src/features/auth/data/auth_repository.dart';
+import 'package:rcp_dashboard/src/features/auth/data/auth_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,6 +29,21 @@ void initDi() {
             requestBody: true,
           ),
         ),
+    )
+    ..registerLazySingleton<TokenHiveRepository>(
+      TokenHiveRepository.new,
+    )
+    ..registerLazySingleton<AuthRepo>(
+      () => AuthRepo(
+        getIt.call(),
+      ),
+    )
+    ..registerLazySingleton<AuthService>(
+      () => AuthService(
+        tokenRepository: getIt.call(),
+        authRepo: getIt.call(),
+        dio: getIt.call(),
+      ),
     )
     ..registerLazySingleton<GalleryRepository>(
       () => GalleryRepository(getIt.call()),

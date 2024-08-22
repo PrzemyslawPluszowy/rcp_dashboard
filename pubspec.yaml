@@ -48,6 +48,7 @@ dependencies:
   rxdart: ^0.28.0
   talker: ^4.4.1
   toast: ^0.3.0
+  url_strategy: ^0.3.0
   uuid: ^4.4.2
   window_manager: ^0.4.2
 
@@ -71,6 +72,9 @@ flutter:
   generate: false
   assets:
     - assets/
+    - assets/icons/
+    - assets/images/
+    - assets/lottie/
 
 # flutter_launcher_icons:
 #   windows:

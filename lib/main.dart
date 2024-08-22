@@ -1,5 +1,6 @@
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:talker/talker.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 final logE = Talker(
   settings: TalkerSettings(),
@@ -7,6 +8,7 @@ final logE = Talker(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initDi();
+  setPathUrlStrategy();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory

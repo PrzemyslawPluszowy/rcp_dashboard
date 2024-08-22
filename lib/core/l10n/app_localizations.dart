@@ -502,6 +502,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The number must contain at least one number'**
   String get mustContainOneNumber;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @signWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign With Apple'**
+  String get signWithApple;
+
+  /// No description provided for @signWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign With Google'**
+  String get signWithGoogle;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Create one'**
+  String get dontHaveAccount;
+
+  /// No description provided for @createNewAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Account'**
+  String get createNewAccount;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUp;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @wrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong password'**
+  String get wrongPassword;
+
+  /// No description provided for @passwordToLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be less then 255'**
+  String get passwordToLong;
+
+  /// No description provided for @passwordToShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8'**
+  String get passwordToShort;
+
+  /// No description provided for @passwordWhiteSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Password cannot start or end with a space'**
+  String get passwordWhiteSpace;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

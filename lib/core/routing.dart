@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rcp_dashboard/core/routes.dart';
 import 'package:rcp_dashboard/core/routing_transition.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/gallery_screen.dart';
+import 'package:rcp_dashboard/src/features/auth/ui/login_screen.dart';
 import 'package:rcp_dashboard/src/features/navigations/ui/navigation_sidebar.dart';
 import 'package:rcp_dashboard/src/features/setting/settings_screen.dart';
 
@@ -23,8 +24,27 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
   debugLogDiagnostics: true,
-  initialLocation: '/home',
+  initialLocation: '/',
+  // redirect: (context, state) async {
+  //   final authStatus = AuthService.authStatusStream.value;
+  //   if (authStatus == AuthStatus.authenticated) {
+  //     if (state.uri == Uri.parse('/')) {
+  //       return RouteName.home;
+  //     } else {
+  //       return null;
+  //     }
+  //   } else {
+  //     return RouteName.login;
+  //   }
+  // },
   routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      name: RouteName.login,
+      pageBuilder: (context, state) => RoutingTransition.fadeTransition(
+        const LoginScreen(),
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return NavigationLayout(

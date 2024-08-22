@@ -1,4 +1,5 @@
 class RouteName {
+  static const String login = '/';
   static const String setting = '/setting';
   static const String gallery = '/gallery';
   static const String home = '/home';
