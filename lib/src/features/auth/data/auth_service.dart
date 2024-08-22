@@ -47,7 +47,10 @@ class AuthService {
         res.toTokenResponseHive(),
       );
       DioHelper.setBearer(res.accessToken);
-      await DioHelper.setupInterceptors();
+      await DioHelper.setupInterceptors(
+        authRepo: authRepo,
+        tokenRepository: tokenRepository,
+      );
     } on DioException catch (e, s) {
       Talker().warning(e, s);
 
@@ -70,7 +73,7 @@ class AuthService {
     } on DioException catch (e, s) {
       Talker().warning(e, s);
 
-      if (e.response?.statusCode == 422) {
+      if (e.response?.statusCode == 401) {
         throw UnAuthorizedExceptions();
       } else if (e.response?.statusCode == 500) {
         throw ServerExceptions();
@@ -84,7 +87,10 @@ class AuthService {
     final token = await tokenRepository.getToken();
     if (token != null) {
       DioHelper.setBearer(token.accessToken);
-      await DioHelper.setupInterceptors();
+      await DioHelper.setupInterceptors(
+        authRepo: authRepo,
+        tokenRepository: tokenRepository,
+      );
       await fetchUser();
       authStatusStream.add(AuthStatus.authenticated);
     } else {

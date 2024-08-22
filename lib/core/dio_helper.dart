@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:rcp_dashboard/core/di.dart';
+import 'package:rcp_dashboard/main.dart';
 import 'package:rcp_dashboard/src/features/auth/data/auth_hive_repository.dart';
 import 'package:rcp_dashboard/src/features/auth/data/auth_repository.dart';
 import 'package:rcp_dashboard/src/features/auth/models/login_response.dart';
@@ -31,25 +31,31 @@ class DioHelper {
     _dio.options.headers['authorization'] = 'Bearer $token';
   }
 
-  static Future<void> setupInterceptors() async {
+  static Future<void> setupInterceptors({
+    required AuthRepo authRepo,
+    required TokenHiveRepository tokenRepository,
+  }) async {
     Future<void> handleUnauthorizedError(
       DioException e,
       ErrorInterceptorHandler handler,
     ) async {
       if (e.response?.statusCode == 401) {
-        final authRepo = getIt<AuthRepo>();
-        final tokenRepository = getIt<TokenHiveRepository>();
         _dio.interceptors.clear();
         _dio.interceptors.add(_addLoggerInterceptor());
         final res = await tokenRepository.getToken();
+        logE.warning('run');
         if (res != null) {
           setBearer(res.refreshToken);
           final newToken = await authRepo.refreshToken();
           await tokenRepository.saveToken(
             newToken.toTokenResponseHive(),
           );
+          print(newToken.accessToken);
           setBearer(newToken.accessToken);
-          await setupInterceptors();
+          await setupInterceptors(
+            authRepo: authRepo,
+            tokenRepository: tokenRepository,
+          );
         } else {
           _dio.interceptors.clear();
         }
