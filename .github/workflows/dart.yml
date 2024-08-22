@@ -22,6 +22,8 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         channel: stable
+    - name: Flutter Build Runner
+      uses: vHanda/flutter-build-runner-action@v1.1    
     - run: flutter pub get
     - run: flutter test
     - run: flutter build web
