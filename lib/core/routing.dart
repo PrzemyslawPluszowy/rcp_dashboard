@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:rcp_dashboard/common/widgets/not_found404.dart';
 import 'package:rcp_dashboard/core/routes.dart';
 import 'package:rcp_dashboard/core/routing_transition.dart';
+import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/gallery_screen.dart';
+import 'package:rcp_dashboard/src/features/auth/data/auth_service.dart';
 import 'package:rcp_dashboard/src/features/auth/ui/login_screen.dart';
 import 'package:rcp_dashboard/src/features/navigations/ui/navigation_sidebar.dart';
 import 'package:rcp_dashboard/src/features/setting/settings_screen.dart';
@@ -25,18 +26,24 @@ final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
   debugLogDiagnostics: true,
   initialLocation: '/',
-  // redirect: (context, state) async {
-  //   final authStatus = AuthService.authStatusStream.value;
-  //   if (authStatus == AuthStatus.authenticated) {
-  //     if (state.uri == Uri.parse('/')) {
-  //       return RouteName.home;
-  //     } else {
-  //       return null;
-  //     }
-  //   } else {
-  //     return RouteName.login;
-  //   }
-  // },
+  errorBuilder: (context, state) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      router.goNamed(RouteName.notFound);
+    });
+    return const SizedBox.shrink();
+  },
+  redirect: (context, state) async {
+    final authStatus = AuthService.authStatusStream.value;
+    if (authStatus == AuthStatus.authenticated) {
+      if (state.uri == Uri.parse('/')) {
+        return RouteName.home;
+      } else {
+        return null;
+      }
+    } else {
+      return RouteName.login;
+    }
+  },
   routes: <RouteBase>[
     GoRoute(
       path: '/',
@@ -44,6 +51,13 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => RoutingTransition.fadeTransition(
         const LoginScreen(),
       ),
+    ),
+    GoRoute(
+      path: '/404',
+      name: RouteName.notFound,
+      builder: (context, state) {
+        return const NotFound404();
+      },
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

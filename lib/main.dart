@@ -1,4 +1,5 @@
 import 'package:rcp_dashboard/main_export.dart';
+import 'package:rcp_dashboard/src/features/auth/data/auth_service.dart';
 import 'package:talker/talker.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -14,6 +15,9 @@ void main() async {
         ? HydratedStorage.webStorageDirectory
         : await getApplicationDocumentsDirectory(),
   );
+  await getIt<AuthService>().autoLogin();
+  // AuthService.authStatusStream.sink.add(AuthStatus.authenticated);
+
   runApp(const RCP());
 }
 

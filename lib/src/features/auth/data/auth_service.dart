@@ -40,7 +40,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      dio.options.baseUrl = Config.baseUrl!;
+      dio.options.baseUrl = Config.baseUrl;
       final res = await authRepo.login(
         userLogin: UserPayload(
           email: email,
@@ -86,7 +86,7 @@ class AuthService {
   }
 
   Future<void> autoLogin() async {
-    dio.options.baseUrl = Config.baseUrl!;
+    dio.options.baseUrl = Config.baseUrl;
     final token = await tokenRepository.getToken();
     if (token != null) {
       setUpBearer(token.accessToken);

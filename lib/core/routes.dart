@@ -9,4 +9,5 @@ class RouteName {
   static const String tags = '/tags';
   static const String users = '/users';
   static const String orders = '/orders';
+  static const String notFound = '/404';
 }

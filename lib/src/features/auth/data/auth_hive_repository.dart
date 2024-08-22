@@ -1,4 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:rcp_dashboard/core/config.dart';
 import 'package:rcp_dashboard/src/features/auth/models/login_response.dart';
 

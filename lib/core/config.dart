@@ -20,5 +20,5 @@ class Config {
 
   ///******* */////
 
-  static String? baseUrl;
+  static String baseUrl = 'https://smart-hol.com';
 }

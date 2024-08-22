@@ -3,10 +3,10 @@ import 'package:rcp_dashboard/common/helpers/validators.dart';
 import 'package:rcp_dashboard/common/widgets/custom_btn_large.dart';
 import 'package:rcp_dashboard/common/widgets/custom_glass_textfield.dart';
 import 'package:rcp_dashboard/common/widgets/divider_text.dart';
-import 'package:rcp_dashboard/common/widgets/error_container.dart';
 import 'package:rcp_dashboard/core/gen/assets.gen.dart';
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/auth/ui/cubit/login_cubit.dart';
+import 'package:rcp_dashboard/src/features/auth/ui/widgets/error_login_container.dart';
 
 class LoginContent extends StatefulWidget {
   const LoginContent({
@@ -93,8 +93,13 @@ class _LoginContentState extends State<LoginContent> {
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: SizedBox.new,
-                error: (message) => ErrorContainer(
-                  message: message,
+                error: (message) => Center(
+                  child: ErrorLoginContainer(
+                    message: message,
+                  ).animate().fadeIn(
+                        duration: Ui.durationMedium,
+                        curve: Curves.easeIn,
+                      ),
                 ),
               );
             },
@@ -133,31 +138,3 @@ class _LoginContentState extends State<LoginContent> {
     );
   }
 }
-
-// Logowanie social
-//   Row _socialBtn(
-//     BuildContext context, {
-//     required String text,
-//     required IconData icon,
-//   }) {
-//     return Row(
-//       children: [
-//         CircleAvatar(
-//           backgroundColor: context.colorScheme.onPrimary,
-//           child: Icon(
-//             icon,
-//             color: const Color.fromARGB(255, 65, 81, 203),
-//           ),
-//         ),
-//         gapW16,
-//         Text(
-//           text,
-//           style: context.textTheme.bodyLarge?.copyWith(
-//             color: context.colorScheme.onPrimary,
-//             fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

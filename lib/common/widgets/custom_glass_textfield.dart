@@ -38,8 +38,8 @@ class CustomGlassTextField extends StatelessWidget {
         keyboardType: keyboardType,
         obscureText: obscureText ? showObscure.value : showObscure.value,
         decoration: InputDecoration(
-          errorStyle: TextStyle(
-            color: context.colorScheme.error,
+          errorStyle: const TextStyle(
+            color: Color.fromARGB(255, 0, 255, 213),
           ),
           hintText: hintText,
           hintStyle: context.textTheme.bodyLarge?.copyWith(
