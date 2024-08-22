@@ -1,7 +1,7 @@
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/data/upload_attachment_repository.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/services/upload_service.dart';
 
@@ -19,30 +19,69 @@ class UploadCubit extends Cubit<UploadState> {
 
   Future<void> uploadFiles() async {
     final files = uploadService.files;
-    emit(UploadState.uploading(totalParts: files.length, currentPart: 1));
-    for (final element in files) {
+
+    if (files.isEmpty) {
+      return;
+    }
+    _emitUploadingState(1, files.length);
+    for (var i = 0; i < files.length; i++) {
+      final file = files[i];
+      debugPrint('Processing file: ${file.name} at index $i');
+
       try {
-        await uploadAttachmentRepository.uploadImage(
-          File(element.path!),
-          element.name,
-          element.name,
-          element.name,
-        );
-        emit(
-          UploadState.uploading(
-            totalParts: files.length,
-            currentPart: files.indexOf(element) + 1,
-          ),
-        );
-      } catch (e) {
-        emit(UploadState.error(e.toString()));
-        uploadService.clear();
+        // await _simulateFileUploadDelay();
+
+        final multipartFile = _createMultipartFile(file);
+
+        await _uploadFile(multipartFile, file);
+
+        _emitUploadingState(i + 1, files.length);
+      } catch (e, stacktrace) {
+        _handleUploadError(e, stacktrace);
         return;
       }
     }
-    uploadService.clear();
-    emit(
-      const UploadState.uploaded(),
+
+    _completeUpload();
+  }
+
+  MultipartFile _createMultipartFile(PlatformFile file) {
+    return MultipartFile.fromBytes(
+      file.bytes!,
+      filename: file.name,
     );
+  }
+
+  Future<void> _uploadFile(MultipartFile file, PlatformFile element) async {
+    await uploadAttachmentRepository.uploadImage(
+      file: file,
+      alt: element.name,
+      description: element.name,
+      name: element.name,
+    );
+  }
+
+  void _emitUploadingState(int currentPart, int totalParts) {
+    emit(
+      UploadState.uploading(
+        totalParts: totalParts,
+        currentPart: currentPart,
+      ),
+    );
+  }
+
+  void _handleUploadError(dynamic error, StackTrace stacktrace) {
+    emit(UploadState.error(error.toString()));
+    uploadService.clear();
+  }
+
+  void _completeUpload() {
+    uploadService.clear();
+    emit(const UploadState.uploaded());
+  }
+
+  void reset() {
+    uploadService.clear();
+    emit(const UploadState.initial());
   }
 }

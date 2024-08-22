@@ -26,10 +26,15 @@ class PickFileCubit extends Cubit<PickFileState> {
         emit(const PickFileState.initial());
         return;
       }
-
+      uploadService.addFiles(result.files);
       emit(PickFileState.loaded(result.files));
     } catch (e) {
       emit(PickFileState.error(e.toString()));
     }
+  }
+
+  void resetState() {
+    uploadService.clear();
+    emit(const PickFileState.initial());
   }
 }

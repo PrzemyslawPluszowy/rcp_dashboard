@@ -1,4 +1,5 @@
 import 'package:rcp_dashboard/common/widgets/cashed_image_widget.dart';
+import 'package:rcp_dashboard/common/widgets/error_container.dart';
 import 'package:rcp_dashboard/common/widgets/responsive.dart';
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
@@ -31,14 +32,7 @@ class GalleryWidget extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (message) => Center(
-            child: Text(
-              message,
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.error,
-              ),
-            ),
-          ),
+          error: (message) => ErrorContainer(message: message),
           loaded: (images, selectedImages, isReachMax) {
             if (images.isEmpty) {
               return Center(child: Text('No images'.hardcoded));

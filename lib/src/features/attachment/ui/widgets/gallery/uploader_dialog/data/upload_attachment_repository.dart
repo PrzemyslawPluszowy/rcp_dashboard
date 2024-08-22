@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:rcp_dashboard/src/features/attachment/models/image_model.dart';
 import 'package:retrofit/retrofit.dart';
@@ -14,10 +12,10 @@ abstract class UploadAttachmentRepository {
 
   @POST('/admin/uploadImage')
   @MultiPart()
-  Future<ImageModel> uploadImage(
-    @Part() File file,
-    @Part() String name,
-    @Part() String description,
-    @Part() String alt,
-  );
+  Future<ImageModel> uploadImage({
+    @MultiPart() required MultipartFile file,
+    @Part() required String name,
+    @Part() required String description,
+    @Part() required String alt,
+  });
 }

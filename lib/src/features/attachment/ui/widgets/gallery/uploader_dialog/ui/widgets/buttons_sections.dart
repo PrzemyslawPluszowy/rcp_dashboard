@@ -1,5 +1,6 @@
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/ui/cubit/pick_file_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/ui/cubit/upload_cubit.dart';
 
 class ButtonsSections extends StatelessWidget {
   const ButtonsSections({
@@ -31,7 +32,7 @@ class ButtonsSections extends StatelessWidget {
                 return FilledButton.icon(
                   icon: const Icon(Icons.save),
                   onPressed: () {
-                    // Navigator.of(context).pop();
+                    context.read<UploadCubit>().uploadFiles();
                   },
                   label: Text('Zapisz'.hardcoded),
                 );
