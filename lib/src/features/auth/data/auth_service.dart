@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:rcp_dashboard/core/config.dart';
+import 'package:rcp_dashboard/core/dio_helper.dart';
 import 'package:rcp_dashboard/src/features/auth/data/auth_hive_repository.dart';
 import 'package:rcp_dashboard/src/features/auth/data/auth_repository.dart';
 import 'package:rcp_dashboard/src/features/auth/exceptions/auth_exceptions.dart';
@@ -20,7 +19,6 @@ enum AuthStatus {
 class AuthService {
   AuthService({
     required this.authRepo,
-    required this.dio,
     required this.tokenRepository,
   }) {
     authStatusStream =
@@ -29,18 +27,15 @@ class AuthService {
   final AuthRepo authRepo;
   final TokenHiveRepository tokenRepository;
 
-  final Dio dio;
   static late User userPayload;
   static User get user => userPayload;
   static late final BehaviorSubject<AuthStatus> authStatusStream;
-  String get setUpBaseUrl => dio.options.baseUrl;
 
   Future<void> login({
     required String email,
     required String password,
   }) async {
     try {
-      dio.options.baseUrl = Config.baseUrl;
       final res = await authRepo.login(
         userLogin: UserPayload(
           email: email,
@@ -51,8 +46,8 @@ class AuthService {
       await tokenRepository.saveToken(
         res.toTokenResponseHive(),
       );
-      setUpBearer(res.accessToken);
-      await setupInterceptors();
+      DioHelper.setBearer(res.accessToken);
+      await DioHelper.setupInterceptors();
     } on DioException catch (e, s) {
       Talker().warning(e, s);
 
@@ -86,11 +81,10 @@ class AuthService {
   }
 
   Future<void> autoLogin() async {
-    dio.options.baseUrl = Config.baseUrl;
     final token = await tokenRepository.getToken();
     if (token != null) {
-      setUpBearer(token.accessToken);
-      await setupInterceptors();
+      DioHelper.setBearer(token.accessToken);
+      await DioHelper.setupInterceptors();
       await fetchUser();
       authStatusStream.add(AuthStatus.authenticated);
     } else {
@@ -98,52 +92,8 @@ class AuthService {
     }
   }
 
-  Future<void> setupInterceptors() async {
-    Future<void> handleUnauthorizedError(
-      DioException e,
-      ErrorInterceptorHandler handler,
-    ) async {
-      if (e.response?.statusCode == 401) {
-        dio.interceptors.clear();
-        dio.interceptors.add(addLoggerInterceptor());
-        final res = await tokenRepository.getToken();
-        if (res != null) {
-          setUpBearer(res.refreshToken);
-          final newToken = await authRepo.refreshToken();
-          await tokenRepository.saveToken(
-            newToken.toTokenResponseHive(),
-          );
-          setUpBearer(newToken.accessToken);
-          await setupInterceptors();
-        } else {
-          dio.interceptors.clear();
-        }
-
-        handler.resolve(await dio.fetch(e.requestOptions));
-      } else {
-        handler.next(e);
-      }
-      return;
-    }
-
-    dio.interceptors.add(addLoggerInterceptor());
-    dio.interceptors.add(InterceptorsWrapper(onError: handleUnauthorizedError));
-  }
-
   Future<void> logOut() async {
     await tokenRepository.clearTokens();
     authStatusStream.add(AuthStatus.unauthenticated);
-    dio.interceptors.clear();
-  }
-
-  void setUpBearer(String token) {
-    dio.options.headers['authorization'] = 'Bearer $token';
-  }
-
-  PrettyDioLogger addLoggerInterceptor() {
-    return PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-    );
   }
 }

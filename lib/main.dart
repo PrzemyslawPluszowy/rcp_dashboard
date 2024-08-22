@@ -16,7 +16,7 @@ void main() async {
         : await getApplicationDocumentsDirectory(),
   );
   await getIt<AuthService>().autoLogin();
-  // AuthService.authStatusStream.sink.add(AuthStatus.authenticated);
+  AuthService.authStatusStream.sink.add(AuthStatus.authenticated);
 
   runApp(const RCP());
 }
