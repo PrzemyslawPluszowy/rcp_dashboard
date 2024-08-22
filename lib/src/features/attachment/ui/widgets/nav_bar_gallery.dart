@@ -1,7 +1,9 @@
 import 'package:rcp_dashboard/main.dart';
 import 'package:rcp_dashboard/main_export.dart';
 import 'package:rcp_dashboard/src/features/attachment/ui/cubit/batch_delete_image_cubit.dart';
-import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/add_images_dialog/add_images_modal.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/ui/cubit/pick_file_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/ui/cubit/upload_cubit.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/ui/uploader_dialog.dart';
 
 class NavBarGallery extends StatelessWidget {
   const NavBarGallery({
@@ -22,7 +24,21 @@ class NavBarGallery extends StatelessWidget {
               showAdaptiveDialog<BuildContext>(
                 context: context,
                 builder: (_) {
-                  return AddImagesModal();
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (_) =>
+                            PickFileCubit(uploadService: getIt.call()),
+                      ),
+                      BlocProvider(
+                        create: (_) => UploadCubit(
+                          uploadAttachmentRepository: getIt.call(),
+                          uploadService: getIt.call(),
+                        ),
+                      ),
+                    ],
+                    child: const UploaderDialog(),
+                  );
                 },
               );
             },

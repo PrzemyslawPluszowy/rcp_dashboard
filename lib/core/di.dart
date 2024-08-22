@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:rcp_dashboard/src/features/attachment/data/gallery_repository.dart';
 import 'package:rcp_dashboard/src/features/attachment/service/gallery_service.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/data/upload_attachment_repository.dart';
+import 'package:rcp_dashboard/src/features/attachment/ui/widgets/gallery/uploader_dialog/services/upload_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -28,5 +30,9 @@ void initDi() {
     ..registerLazySingleton<GalleryRepository>(
       () => GalleryRepository(getIt.call()),
     )
-    ..registerLazySingleton<GalleryService>(GalleryService.new);
+    ..registerLazySingleton<GalleryService>(GalleryService.new)
+    ..registerLazySingleton<UploadAttachmentRepository>(
+      () => UploadAttachmentRepository(getIt.call()),
+    )
+    ..registerSingleton(UploadService());
 }
