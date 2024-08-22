@@ -50,7 +50,6 @@ class DioHelper {
           await tokenRepository.saveToken(
             newToken.toTokenResponseHive(),
           );
-          print(newToken.accessToken);
           setBearer(newToken.accessToken);
           await setupInterceptors(
             authRepo: authRepo,

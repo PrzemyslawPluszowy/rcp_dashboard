@@ -254,4 +254,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get passwordWhiteSpace => 'Password cannot start or end with a space';
+
+  @override
+  String get serverError => 'Server error';
+
+  @override
+  String get invalidCredential => 'Wrong email or password';
 }

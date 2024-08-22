@@ -592,6 +592,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password cannot start or end with a space'**
   String get passwordWhiteSpace;
+
+  /// No description provided for @serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error'**
+  String get serverError;
+
+  /// No description provided for @invalidCredential.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email or password'**
+  String get invalidCredential;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

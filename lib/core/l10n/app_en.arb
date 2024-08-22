@@ -81,5 +81,7 @@
   "wrongPassword": "Wrong password",
   "passwordToLong": "Password must be less then 255",
   "passwordToShort": "Password must be at least 8",
-  "passwordWhiteSpace": "Password cannot start or end with a space"
+  "passwordWhiteSpace": "Password cannot start or end with a space",
+  "serverError": "Server error",
+  "invalidCredential": "Wrong email or password"
 }

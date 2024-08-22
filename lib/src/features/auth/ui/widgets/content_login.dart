@@ -95,7 +95,7 @@ class _LoginContentState extends State<LoginContent> {
                 orElse: SizedBox.new,
                 error: (message) => Center(
                   child: ErrorLoginContainer(
-                    message: message,
+                    message: message.getTranslated(context),
                   ).animate().fadeIn(
                         duration: Ui.durationMedium,
                         curve: Curves.easeIn,
